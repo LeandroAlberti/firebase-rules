@@ -4,91 +4,21 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>firebase-rules</title>
+	<title>Offeritibanos</title>
 
-	<style>
-		* {
-			font-family: Arial, Helvetica, sans-serif;
-			margin: 0px;
-		}
+	<!-- INDEX -->
+	<link rel="stylesheet" href="styles/index.css">
+	
+	<!-- COMPONENTS -->
+	<link rel="stylesheet" href="styles/components.css">
 
-		html,
-		body {
-			margin: 0px;
-			height: 100%;
-			background-color: black;
-		}
-
-		button {
-			padding: 10px;
-			border-radius: 8px;
-			border: 0px;
-			background-color: #5a00ad;
-			color: white;
-			cursor: pointer;
-		}
-
-		input, select {
-			background-color: #360068;
-			color: white;
-			border: 0px;
-			padding: 10px;
-			border-radius: 8px;
-		}
-
-		#root {
-			height: 100%;
-			display: flex;
-			background-color: black;
-			color: white;
-			flex-direction: column;
-			overflow: auto;
-		}
-
-		#root>.secao:nth-child(even) {
-			background-color: #242424;
-		}
-		
-		#root>.secao:nth-child(odd) {
-			background-color: #1a1a1a;
-		}
-
-		#root>#output {
-			overflow: auto;
-			flex: 1;
-			white-space: break-spaces;
-		}
-
-		.secao {
-			padding: 20px 10px;
-		}
-	</style>
+	<!-- USUÁRIOS -->
+	<link rel="stylesheet" href="styles/usuarios.css">
 </head>
 
 <body>
-	<div id="root">
-		<div id="autenticacao" class="secao">
-			<p>Autenticacao</p>
-			<input id="emailInp" type="email" placeholder="Email" />
-			<input id="passwordInp" type="password" placeholder="Senha" />
-			<select id="nivelUsuario">
-				<option>1</option>
-				<option>2</option>
-			</select>
-			<button id="loginBtn">Login</button>
-			<button id="logoutBtn">Logout</button>
-			<button id="novoUsuario">Novo Usuário</button>
-		</div>
-		<div id="dados" class="secao">
-			<p>Dados</p>
-			<button id="listarDados">Listar dados</button>
-			<input id="input" placeholder="Input">
-			<button id="limparBtn">Limpar</button>
-		</div>
-		<pre id="output" class="secao"></pre>
-	</div>
-
-	<script type="module" src="index.js"></script>
+	<div id="root"></div>
+	<script type="module" src="modules/index.js"></script>
 </body>
 
 </html>

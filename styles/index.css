@@ -1,0 +1,61 @@
+:root {
+    --mainBg: black;
+    --roxo1: #360068;
+    --roxo2: #5a00ad;
+    --preto1: #242424;
+    --preto2: #1a1a1a;
+}
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0px;
+}
+
+html, body {
+    margin: 0px;
+    height: 100%;
+    background-color: var(--mainBg);
+}
+
+button {
+    padding: 10px;
+    border-radius: 8px;
+    border: 0px;
+    background-color: var(--roxo2);
+    color: white;
+    cursor: pointer;
+}
+
+input, select {
+    background-color: var(--roxo1);
+    color: white;
+    border: 0px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#root {
+    height: 100%;
+    display: flex;
+    background-color: var(--mainBg);
+    color: white;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.secao {
+    padding: 20px 10px;
+}
+
+.secao:nth-child(even) {
+    background-color: var(--preto1);
+}
+
+.secao:nth-child(odd) {
+    background-color: var(--preto2);
+}
+
+.secao>h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
