@@ -2,12 +2,12 @@ import * as usuarios from './usuarios.js'
 import * as mercados from './mercados.js'
 import * as produtos from './produtos.js'
 import * as ofertas from './ofertas.js'
-import * as auth from './auth.js'
-import { auth as auth2, signOut, onAuthStateChanged } from './config.js'
+import * as authMod from './auth.js'
+import { auth, signOut, onAuthStateChanged } from './config.js'
 
 const criarHeader = () => {
 	root.innerHTML = '<div id="header" class="secao"></div>';
-	onAuthStateChanged(auth2, (user) => {
+	onAuthStateChanged(auth, (user) => {
 		if (user) {
 			header.innerHTML =
 				` <button id="btnUsuarios">Usuários</button>
@@ -18,14 +18,16 @@ const criarHeader = () => {
 				  <button id="btnAuth">Sair</button>
 			  	`;
 
-			btnUsuarios.onclick = () => abrirPagina('usuarios', true, false);
-			btnMercados.onclick = () => abrirPagina('mercados', true, false);
-			btnSetores.onclick = () => abrirPagina('setores', true, false);
-			btnProdutos.onclick = () => abrirPagina('produtos', true, false);
-			btnOfertas.onclick = () => abrirPagina('ofertas');
+			btnUsuarios.onclick = () => abrirPagina('usuarios');
+			btnMercados.onclick = () => abrirPagina('mercados');
+			btnSetores.onclick = () => abrirPagina('setores');
+			btnProdutos.onclick = () => abrirPagina('produtos');
+			btnOfertas.onclick = () => abrirPagina('ofertas', true, true);
 			btnAuth.onclick = () => {
-				signOut(auth2);
-				abrirPagina('ofertas');
+				if (confirm('Deseja sair do aplicativo?')) {
+					signOut(auth);
+					abrirPagina('ofertas', true, true);
+				}
 			};
 		} else {
 			header.innerHTML =
@@ -33,8 +35,8 @@ const criarHeader = () => {
 					<button id="btnAuth">Entrar</button>
 				`;
 
-			btnOfertas.onclick = () => abrirPagina('ofertas');
-			btnAuth.onclick = () => abrirPagina('auth', true, false);
+			btnOfertas.onclick = () => abrirPagina('ofertas', true, true);
+			btnAuth.onclick = () => abrirPagina('auth');
 		}
 	});
 }
@@ -46,7 +48,7 @@ const criarOutput = () => {
 	root.appendChild(pre);
 }
 
-const abrirPagina = async (path, comHeader = true, comOutput = true) => {
+const abrirPagina = async (path, comHeader = true, comOutput = false) => {
 	root.innerHTML = '';
 	if (comHeader) {
 		await criarHeader();
@@ -81,24 +83,50 @@ const atribuicoes = async (path) => {
 			usuarios.carregarUsuarios();
 			break;
 		case 'mercados':
+			const mercados = {
+				idMercado01: {
+					nome: 'Myatã'
+				},
+				idMercado02: {
+					nome: 'Queluz'
+				},
+				idMercado03: {
+					nome: 'Franciosi'
+				},
+				idMercado04: {
+					nome: 'Via atacadista'
+				}
+			}
+			
+			for (const idMercado in mercados) {
+				lista.innerHTML += `<p class="nome">${mercados[idMercado].nome}</p><img src="images/icons/delete.svg" style="cursor: pointer;" onclick="alert('Remover mercado ${mercados[idMercado].nome}? id: ${idMercado}')" />`;
+			}
+
+			nome.onkeypress = (event) => {
+				if (event.key == 'Enter') {
+					if (!nome.value) {
+						return;
+					}
+					confirm(`Incluir mercado ${nome.value}?`)
+				}
+			};
 
 			break;
 		case 'produtos':
 
 			break;
 		case 'ofertas':
-			listarDados.onclick = async () => ofertas.carregarDados();
 			limparBtn.onclick = () => ofertas.limparDados();
 
 			input.focus();
 			input.onkeypress = (event) => {
 				if (event.key == 'Enter') {
-					if (!auth.auth.currentUser) {
+					if (!authMod.auth.currentUser) {
 						alert('Nenhum usuário logado');
 					} else {
 						const novoDado = {};
 						novoDado.dado = input.value;
-						novoDado.addPor = auth.auth.currentUser.uid;
+						novoDado.addPor = authMod.auth.currentUser.uid;
 						dados.adicionarDados(novoDado);
 						input.value = '';
 						input.focus();
@@ -110,14 +138,12 @@ const atribuicoes = async (path) => {
 			break;
 		case 'auth':
 			loginBtn.onclick = () => {
-				auth.login(emailInp.value, passwordInp.value || '1')
-					.then((ret) => {
-						abrirPagina('ofertas');
-					})
+				authMod.login(emailInp.value, passwordInp.value || '0')
+					.then(() => abrirPagina('ofertas'))
 					.catch((erro) => alert(erro.code));
 			}
 			break;
 	}
 }
 
-abrirPagina('ofertas');
+abrirPagina('mercados');
