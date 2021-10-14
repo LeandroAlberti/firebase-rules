@@ -4,6 +4,14 @@ export const login = async (email, senha) => {
     try {
         return await signInWithEmailAndPassword(auth, email, senha);
     } catch (erro) {
-        throw erro;
+        switch (erro.code) {
+            case 'auth/invalid-email':
+            case 'auth/user-not-found':
+                throw 'E-mail inválido';
+            case 'auth/wrong-password':
+                throw 'Senha incorreta';
+            default:
+                throw erro.code;
+        }
     }
 }

@@ -137,13 +137,16 @@ const atribuicoes = async (path) => {
 			ofertas.carregarDados();
 			break;
 		case 'auth':
+			emailInp.focus();
 			loginBtn.onclick = () => {
 				authMod.login(emailInp.value, passwordInp.value || '0')
 					.then(() => abrirPagina('ofertas'))
-					.catch((erro) => alert(erro.code));
+					.catch((erro) => {
+						alert(erro);
+					});
 			}
 			break;
 	}
 }
 
-abrirPagina('mercados');
+abrirPagina('ofertas', true,  true);
