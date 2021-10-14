@@ -1,3 +1,27 @@
 #usuarios {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#usuarios>#novoUsuario {
+    margin-bottom: 10px;
+}
+
+#usuarios>#listaUsuarios {
+    display: grid;
+    grid: 1fr / 1fr 65px 40px;
+    justify-items: center;
+    align-items: center;
+    background-color: var(--preto2);
+    border-radius: 8px;
+}
+
+#usuarios>#listaUsuarios>.nome {
+    justify-self: left;
+}
+
+#usuarios>#listaUsuarios>img {
+    width: 30px;
+    cursor: pointer;
 }

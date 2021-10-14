@@ -1,51 +1,94 @@
-import * as dados from './dados.js'
 import * as usuarios from './usuarios.js'
 import * as mercados from './mercados.js'
 import * as produtos from './produtos.js'
 import * as ofertas from './ofertas.js'
 import * as auth from './auth.js'
+import { auth as auth2, signOut, onAuthStateChanged } from './config.js'
 
-const abrirHeader = async () => {
-	const header = await fetch('components/header.html');
-	root.innerHTML = await header.text();
+const criarHeader = () => {
+	root.innerHTML = '<div id="header" class="secao"></div>';
+	onAuthStateChanged(auth2, (user) => {
+		if (user) {
+			header.innerHTML =
+				` <button id="btnUsuarios">Usuários</button>
+				  <button id="btnMercados">Mercados</button>
+				  <button id="btnSetores">Setores</button>
+				  <button id="btnProdutos">Produtos</button>
+				  <button id="btnOfertas">Ofertas</button>
+				  <button id="btnAuth">Sair</button>
+			  	`;
 
-	btnDados.onclick = () => abrirPagina('dados');
-	btnUsuarios.onclick = () => abrirPagina('usuarios', true, false);
-	btnMercados.onclick = () => abrirPagina('mercados');
-	btnProdutos.onclick = () => abrirPagina('produtos');
-	btnOfertas.onclick = () => abrirPagina('ofertas');
-	btnLogin.onclick = () => abrirPagina('auth');
+			btnUsuarios.onclick = () => abrirPagina('usuarios', true, false);
+			btnMercados.onclick = () => abrirPagina('mercados', true, false);
+			btnSetores.onclick = () => abrirPagina('setores', true, false);
+			btnProdutos.onclick = () => abrirPagina('produtos', true, false);
+			btnOfertas.onclick = () => abrirPagina('ofertas');
+			btnAuth.onclick = () => {
+				signOut(auth2);
+				abrirPagina('ofertas');
+			};
+		} else {
+			header.innerHTML =
+				`	<button id="btnOfertas">Ofertas</button>
+					<button id="btnAuth">Entrar</button>
+				`;
+
+			btnOfertas.onclick = () => abrirPagina('ofertas');
+			btnAuth.onclick = () => abrirPagina('auth', true, false);
+		}
+	});
 }
 
-const abrirOutput = async () => {
-	const output = await fetch('components/output.html');
-	const div = document.createElement('div');
-	div.innerHTML = await output.text();
-	root.appendChild(div.firstElementChild);
+const criarOutput = () => {
+	const pre = document.createElement('pre');
+	pre.id = 'output';
+	pre.className = 'secao';
+	root.appendChild(pre);
 }
 
 const abrirPagina = async (path, comHeader = true, comOutput = true) => {
+	root.innerHTML = '';
 	if (comHeader) {
-		await abrirHeader();
+		await criarHeader();
 	}
-
 	const dados = await fetch(`pages/${path}.html`);
 	const div = document.createElement('div');
 	div.innerHTML = await dados.text();
 	root.appendChild(div.firstElementChild);
 
 	if (comOutput) {
-		await abrirOutput();
+		criarOutput();
 	}
 
-	atribuicoes(path);
+	await atribuicoes(path);
 }
 
 const atribuicoes = async (path) => {
 	switch (path) {
-		case 'dados':
-			listarDados.onclick = async () => dados.carregarDados();
-			limparBtn.onclick = () => dados.limparDados();
+		case 'usuarios':
+			novoUsuarioBtn.onclick = () => {
+				usuarios.novoUsuario(nome.value, email.value, senha.value, nivelUsuario.value)
+					.then(() => {
+						nome.value = '';
+						email.value = '';
+						senha.value = '';
+						nivelUsuario.value = 1;
+						usuarios.carregarUsuarios();
+					})
+					.catch((erro) => alert(erro.code))
+			}
+
+			usuarios.carregarUsuarios();
+			break;
+		case 'mercados':
+
+			break;
+		case 'produtos':
+
+			break;
+		case 'ofertas':
+			listarDados.onclick = async () => ofertas.carregarDados();
+			limparBtn.onclick = () => ofertas.limparDados();
 
 			input.focus();
 			input.onkeypress = (event) => {
@@ -63,44 +106,18 @@ const atribuicoes = async (path) => {
 				}
 			}
 
-			dados.carregarDados();
-			break;
-		case 'usuarios':
-			usuarios.carregarUsuarios();
-			break;
-		case 'mercados':
-
-			break;
-		case 'produtos':
-
-			break;
-		case 'ofertas':
-
+			ofertas.carregarDados();
 			break;
 		case 'auth':
-			
 			loginBtn.onclick = () => {
 				auth.login(emailInp.value, passwordInp.value || '1')
 					.then((ret) => {
-						abrirPagina('dados');
+						abrirPagina('ofertas');
 					})
 					.catch((erro) => alert(erro.code));
 			}
-			
-			logoutBtn.onclick = async () => {
-				auth.logout()
-					.then(() => abrirPagina('dados'))
-					.catch((erro) => alert(erro));
-			};
-			
-			novoUsuario.onclick = () => {
-				auth.novoUsuario(emailInp.value, passwordInp.value, nivelUsuario.value)
-					.then((ret) => abrirPagina('usuarios'))
-					.catch((erro) => alert(erro.code))
-			}
-
 			break;
 	}
 }
 
-abrirPagina('dados');
+abrirPagina('ofertas');
