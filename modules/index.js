@@ -1,5 +1,6 @@
 import * as usuarios from './usuarios.js'
 import * as mercados from './mercados.js'
+import * as setores from './setores.js'
 import * as produtos from './produtos.js'
 import * as ofertas from './ofertas.js'
 import * as authMod from './auth.js'
@@ -102,7 +103,30 @@ const atribuicoes = async (path) => {
 					}
 				}
 			};
+			break;
+		case 'setores':
+			setores.listarSetores(listaSetores);
 
+			nome.onkeypress = (event) => {
+				if (event.key == 'Enter') {
+					if (!nome.value) {
+						return;
+					}
+
+					if (confirm(`Incluir setor ${nome.value}?`)) {
+						setores.incluirSetor(nome.value)
+							.then(() => nome.value = '')
+							.catch((err) => {
+								if (err = 'PERMISSION_DENIED') {
+									alert('Permissão negada');
+									return;
+								}
+								alert('Erro desconhecido');
+								console.log(erro);
+							});
+					}
+				}
+			};
 			break;
 		case 'produtos':
 
