@@ -1,5 +1,6 @@
 :root {
     --mainBg: black;
+    --modalBG: #000000cc;
     --roxo1: #360068;
     --roxo2: #5a00ad;
     --preto1: #242424;
@@ -34,6 +35,38 @@ input, select {
     border-radius: 8px;
 }
 
+.loader {
+    border: 16px solid var(--roxo2);
+    border-radius: 50%;
+    border-top: 16px solid var(--roxo1);
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+  
+/* Safari */
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loader {
+    position: absolute;
+    background: var(--modalBG);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 #root {
     height: 100%;
     display: flex;
@@ -58,4 +91,13 @@ input, select {
 .secao>h2 {
     text-align: center;
     margin-bottom: 10px;
+}
+
+.lista {
+    display: grid;
+    background-color: var(--preto2);
+    align-items: center;
+    justify-items: center;
+    grid-auto-rows: 35px;
+    border-radius: 8px;
 }

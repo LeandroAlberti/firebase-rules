@@ -8,6 +8,7 @@ import { auth, signOut, onAuthStateChanged } from './config.js'
 const criarHeader = () => {
 	root.innerHTML = '<div id="header" class="secao"></div>';
 	onAuthStateChanged(auth, (user) => {
+		loader.style.display = 'none';
 		if (user) {
 			header.innerHTML =
 				` <button id="btnUsuarios">Usuários</button>
@@ -83,31 +84,22 @@ const atribuicoes = async (path) => {
 			usuarios.carregarUsuarios();
 			break;
 		case 'mercados':
-			const mercados = {
-				idMercado01: {
-					nome: 'Myatã'
-				},
-				idMercado02: {
-					nome: 'Queluz'
-				},
-				idMercado03: {
-					nome: 'Franciosi'
-				},
-				idMercado04: {
-					nome: 'Via atacadista'
-				}
-			}
-			
-			for (const idMercado in mercados) {
-				lista.innerHTML += `<p class="nome">${mercados[idMercado].nome}</p><img src="images/icons/delete.svg" style="cursor: pointer;" onclick="alert('Remover mercado ${mercados[idMercado].nome}? id: ${idMercado}')" />`;
-			}
+			mercados.listarMercados(listaMercados);
 
 			nome.onkeypress = (event) => {
 				if (event.key == 'Enter') {
 					if (!nome.value) {
 						return;
 					}
-					confirm(`Incluir mercado ${nome.value}?`)
+					if (confirm(`Incluir mercado ${nome.value}?`)) {
+						mercados.incluirMercado(nome.value)
+							.then(() => nome.value = '')
+							.catch((err) => {
+								if (err = 'PERMISSION_DENIED') {
+									alert('Permissão negada');
+								}
+							});
+					}
 				}
 			};
 
@@ -134,13 +126,13 @@ const atribuicoes = async (path) => {
 				}
 			}
 
-			ofertas.carregarDados();
+			await ofertas.carregarDados();
 			break;
 		case 'auth':
 			emailInp.focus();
 			loginBtn.onclick = () => {
 				authMod.login(emailInp.value, passwordInp.value || '0')
-					.then(() => abrirPagina('ofertas'))
+					.then(() => abrirPagina('ofertas', true,  true))
 					.catch((erro) => {
 						alert(erro);
 					});

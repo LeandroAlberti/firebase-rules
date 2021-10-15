@@ -8,20 +8,15 @@
     margin-bottom: 10px;
 }
 
-#usuarios>#listaUsuarios {
-    display: grid;
+#usuarios>.lista {
     grid: 1fr / 1fr 65px 40px;
-    justify-items: center;
-    align-items: center;
-    background-color: var(--preto2);
-    border-radius: 8px;
 }
 
-#usuarios>#listaUsuarios>.nome {
+#usuarios>.lista>.nome {
     justify-self: left;
 }
 
-#usuarios>#listaUsuarios>img {
+#usuarios>.lista>img {
     width: 30px;
     cursor: pointer;
 }

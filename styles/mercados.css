@@ -8,18 +8,14 @@
     margin-bottom: 10px;
 }
 
-#mercados>#lista {
-    /* background-color: rgb(105, 53, 44); */
-    display: grid;
-    grid: 1fr / 1fr 40px;
-    align-items: center;
-    justify-items: center;
+#mercados>.lista {
+    grid-template-columns: 1fr 40px;
 }
 
-#mercados>#lista>p.nome {
+#mercados>.lista>p.nome {
     justify-self: left;
 }
 
-#mercados>#lista>img {
+#mercados>.lista>img {
     width: 25px;
 }
