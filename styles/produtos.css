@@ -3,3 +3,19 @@
     display: flex;
     flex-direction: column;
 }
+
+#produtos>#camposNovo {
+    margin-bottom: 10px;
+}
+
+#produtos>.lista {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 40px;
+}
+
+#produtos>.lista>p.nome {
+    justify-self: left;
+}
+
+#produtos>.lista>img {
+    width: 25px;
+}

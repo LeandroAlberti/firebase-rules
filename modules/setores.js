@@ -24,26 +24,37 @@ export const incluirSetor = async (setor) => {
         });
 }
 
-export const listarSetores = (elementoLista) => {
+export const listarSetores = (elementoLista, tipoLista) => {
     onValue(refSetores, (snapshot) => {
         if (snapshot.exists()) {
             const objSetores = snapshot.val();
             elementoLista.innerHTML = '';
-            for (const idSetor in objSetores) {
-                const nomeSetor = objSetores[idSetor].nome;
-                const tsSetor = objSetores[idSetor].timeStamp;
-                const p = document.createElement('p');
-                const img = document.createElement('img');
-
-                p.className = 'nome';
-                p.innerHTML = nomeSetor;
-
-                img.src = 'images/icons/delete.svg';
-                img.style.cursor = 'pointer';
-                img.onclick = () => removerSetor(nomeSetor, idSetor, tsSetor);
-
-            	elementoLista.appendChild(p);
-            	elementoLista.appendChild(img);
+            if (tipoLista == 'tabela') {
+                for (const idSetor in objSetores) {
+                    const nomeSetor = objSetores[idSetor].nome;
+                    const tsSetor = objSetores[idSetor].timeStamp;
+                    const p = document.createElement('p');
+                    const img = document.createElement('img');
+    
+                    p.className = 'nome';
+                    p.innerHTML = nomeSetor;
+    
+                    img.src = 'images/icons/delete.svg';
+                    img.style.cursor = 'pointer';
+                    img.onclick = () => removerSetor(nomeSetor, idSetor, tsSetor);
+    
+                    elementoLista.appendChild(p);
+                    elementoLista.appendChild(img);
+                }
+            }
+            if (tipoLista == 'select') {
+                for (const idSetor in objSetores) {
+                    const nomeSetor = objSetores[idSetor].nome;
+                    const option = document.createElement('option');
+                    option.innerHTML = nomeSetor;
+                    option.value = idSetor;
+                    elementoLista.appendChild(option);
+                }
             }
         } else {
             alert('Nenhum setor cadastrado');

@@ -1,3 +1,25 @@
 <div id="produtos" class="secao">
     <h2>Produtos</h2>
+
+    <div id="camposNovo">
+        <select id="setor"></select>
+        <input id="nome" placeholder="Nome do produto" autocomplete="off">
+        <input id="marca" placeholder="Marca do produto">
+        <input id="qtde" type="number" placeholder="Quantidade">
+        <select id="unidade">
+            <option>kg</option>
+            <option>g</option>
+            <option>L</option>
+            <option>ml</option>
+        </select>
+        <button id="btnCadastrar" onclick="alert(JSON.stringify({
+            nome: nome.value,
+            marca: marca.value,
+            setor: setor.value,
+            qtde: qtde.value,
+            unidade: unidade.value
+        }), null, 4)">Cadastrar</button>
+    </div>
+
+    <div id="listaProdutos" class="lista"></div>
 </div>

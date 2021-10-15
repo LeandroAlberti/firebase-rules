@@ -105,7 +105,7 @@ const atribuicoes = async (path) => {
 			};
 			break;
 		case 'setores':
-			setores.listarSetores(listaSetores);
+			setores.listarSetores(listaSetores, 'tabela');
 
 			nome.onkeypress = (event) => {
 				if (event.key == 'Enter') {
@@ -129,7 +129,59 @@ const atribuicoes = async (path) => {
 			};
 			break;
 		case 'produtos':
+			setores.listarSetores(setor, 'select');
 
+			const objProdutos = {
+				idProd1: {
+					nome: 'Nome Prod 1',
+					marca: 'Marca 1',
+					setor: 'Setor 1',
+					qtde: '90',
+					unidade: 'g',
+					timeStamp: 19874937854893
+				},
+				idProd2: {
+					nome: 'Nome Prod 2',
+					marca: 'Marca 2',
+					setor: 'Setor 2',
+					qtde: '1',
+					unidade: 'kg',
+					timeStamp: 19874937854893
+				}
+			}
+
+			for (const idProd in objProdutos) {
+				const nomeProduto = objProdutos[idProd].nome;
+				const marcaProduto = objProdutos[idProd].marca;
+				const setorProduto = objProdutos[idProd].setor;
+				const qtdeProduto = objProdutos[idProd].qtde;
+				const unidadeProduto = objProdutos[idProd].unidade;
+				const tsSetor = objProdutos[idProd].timeStamp;
+				const pNome = document.createElement('p');
+				const pMarca = document.createElement('p');
+				const pSetor = document.createElement('p');
+				const pQtde = document.createElement('p');
+				const pUni = document.createElement('p');
+				const img = document.createElement('img');
+
+				pNome.className = 'nome';
+				pNome.innerHTML = nomeProduto;
+				pMarca.innerHTML = marcaProduto;
+				pSetor.innerHTML = setorProduto;
+				pQtde.innerHTML = qtdeProduto;
+				pUni.innerHTML = unidadeProduto;
+				
+				img.src = 'images/icons/delete.svg';
+				img.style.cursor = 'pointer';
+				// img.onclick = () => removerSetor(nomeSetor, idProd, tsSetor);
+
+				listaProdutos.appendChild(pNome);
+				listaProdutos.appendChild(pMarca);
+				listaProdutos.appendChild(pSetor);
+				listaProdutos.appendChild(pQtde);
+				listaProdutos.appendChild(pUni);
+				listaProdutos.appendChild(img);
+			}
 			break;
 		case 'ofertas':
 			limparBtn.onclick = () => ofertas.limparDados();
@@ -165,4 +217,5 @@ const atribuicoes = async (path) => {
 	}
 }
 
-abrirPagina('ofertas', true,  true);
+// abrirPagina('ofertas', true,  true);
+abrirPagina('produtos');
