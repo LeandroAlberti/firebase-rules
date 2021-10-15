@@ -186,7 +186,6 @@ const atribuicoes = async (path) => {
 		case 'ofertas':
 			limparBtn.onclick = () => ofertas.limparDados();
 
-			input.focus();
 			input.onkeypress = (event) => {
 				if (event.key == 'Enter') {
 					if (!authMod.auth.currentUser) {
