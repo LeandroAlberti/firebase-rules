@@ -1,13 +1,13 @@
 import { bd, ref, push, onValue, remove, get } from "./config.js";
 
-const refSetores = ref(bd, '/regras/setores');
+const refSetores = ref(bd, '/setores');
 
 const removerSetor = (nomeSetor, idSetor, tsSetor) => {
     if (!confirm(`Deseja remover o setor ${nomeSetor} criado em ${new Date(tsSetor).toLocaleString('pt-BR')}?`)) {
         return;
     }
 
-    const removerId = ref(bd, `/regras/setores/${idSetor}`);
+    const removerId = ref(bd, `/setores/${idSetor}`);
 
     remove(removerId)
         .catch((err) => {

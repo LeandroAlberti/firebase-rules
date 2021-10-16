@@ -1,13 +1,13 @@
 import { bd, ref, push, onValue, remove } from "./config.js";
 
-const refProdutos = ref(bd, '/regras/produtos');
+const refProdutos = ref(bd, '/produtos');
 
 const removerProduto = (nomeMercado, idMercado, tsMercado) => {
     if (!confirm(`Deseja remover o produto ${nomeMercado} criado em ${new Date(tsMercado).toLocaleString('pt-BR')}?`)) {
         return;
     }
 
-    const removerId = ref(bd, `/regras/produtos/${idMercado}`);
+    const removerId = ref(bd, `/produtos/${idMercado}`);
 
     remove(removerId)
         .catch((err) => {

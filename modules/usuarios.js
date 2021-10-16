@@ -1,10 +1,10 @@
 import { bd, ref, onValue, set, remove, auth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "./config.js";
 
-const refUsuarios = ref(bd, '/regras/usuarios');
+const refUsuarios = ref(bd, '/usuarios');
 
 const removerUsuario = (uid, nome) => {
     if (confirm(`Deseja remover o usuário ${nome}?`)) {
-        const refUid = ref(bd, `/regras/usuarios/${uid}`)
+        const refUid = ref(bd, `/usuarios/${uid}`)
         remove(refUid);
     }
 }

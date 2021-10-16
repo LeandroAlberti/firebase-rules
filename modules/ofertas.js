@@ -1,6 +1,6 @@
 import { bd, ref, onValue, push, set } from "./config.js";
 
-const refDados = ref(bd, '/regras/dados');
+const refDados = ref(bd, '/dados');
 
 export const carregarDados = () => {
 	onValue(refDados, (snapshot) => {
