@@ -131,6 +131,25 @@ const atribuicoes = async (path) => {
 		case 'produtos':
 			setores.listarSetores(setor, 'select');
 
+			btnCadastrar.onclick = () => {
+				produtos.incluirProduto({
+					nome: nome.value,
+					marca: marca.value,
+					setor: setor.value,
+					qtde: qtde.value,
+					unidade: unidade.value,
+					timeStamp: Date.now()
+				}).catch((err) => {
+					if (err == 'PERMISSION_DENIED') {
+						alert('Permissão negada');
+					} else {
+						alert(err);
+					}
+				});
+			}
+
+			return produtos.listarProdutos(listaProdutos, 'tabela');
+
 			const objProdutos = {
 				idProd1: {
 					nome: 'Nome Prod 1',

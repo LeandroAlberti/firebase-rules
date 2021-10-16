@@ -1,4 +1,4 @@
-import { bd, ref, push, onValue, remove } from "./config.js";
+import { bd, ref, push, onValue, remove, get } from "./config.js";
 
 const refSetores = ref(bd, '/regras/setores');
 
@@ -48,11 +48,11 @@ export const listarSetores = (elementoLista, tipoLista) => {
                 }
             }
             if (tipoLista == 'select') {
+                elementoLista.innerHTML = '<option>Selecione um setor</option>';
                 for (const idSetor in objSetores) {
                     const nomeSetor = objSetores[idSetor].nome;
                     const option = document.createElement('option');
                     option.innerHTML = nomeSetor;
-                    option.value = idSetor;
                     elementoLista.appendChild(option);
                 }
             }
@@ -60,4 +60,12 @@ export const listarSetores = (elementoLista, tipoLista) => {
             alert('Nenhum setor cadastrado');
         }
     });
+}
+
+export const retornarSetores = async () => {
+    try {
+        return (await get(refSetores)).val();
+    } catch (error) {
+        throw error;
+    }
 }
