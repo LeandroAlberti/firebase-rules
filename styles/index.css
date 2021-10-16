@@ -101,3 +101,27 @@ input, select {
     grid-auto-rows: 35px;
     border-radius: 8px;
 }
+
+.lista>p.nome {
+    justify-self: left;
+    margin-left: 10px;
+}
+
+.lista>img {
+    width: 25px;
+    cursor: pointer;
+}
+
+#header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 10px 10px 20px 10px;
+}
+
+#header>button {
+    margin: 10px 5px 0px 0px;
+    width: 110px;
+    font-size: 20px;
+}

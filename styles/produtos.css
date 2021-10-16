@@ -11,11 +11,3 @@
 #produtos>.lista {
     grid-template-columns: 1fr 1fr 1fr 50px 30px 40px;
 }
-
-#produtos>.lista>p.nome {
-    justify-self: left;
-}
-
-#produtos>.lista>img {
-    width: 25px;
-}

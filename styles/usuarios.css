@@ -11,12 +11,3 @@
 #usuarios>.lista {
     grid: 1fr / 1fr 65px 40px;
 }
-
-#usuarios>.lista>.nome {
-    justify-self: left;
-}
-
-#usuarios>.lista>img {
-    width: 30px;
-    cursor: pointer;
-}

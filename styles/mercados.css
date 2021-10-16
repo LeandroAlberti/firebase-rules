@@ -11,11 +11,3 @@
 #mercados>.lista {
     grid-template-columns: 1fr 40px;
 }
-
-#mercados>.lista>p.nome {
-    justify-self: left;
-}
-
-#mercados>.lista>img {
-    width: 25px;
-}

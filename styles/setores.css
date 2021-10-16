@@ -11,11 +11,3 @@
 #setores>.lista {
     grid-template-columns: 1fr 40px;
 }
-
-#setores>.lista>p.nome {
-    justify-self: left;
-}
-
-#setores>.lista>img {
-    width: 25px;
-}

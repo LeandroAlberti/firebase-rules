@@ -6,16 +6,13 @@
 
 #ofertas>#camposNovo {
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: max-content;
+    align-self: center;
 }
 
 #ofertas>.lista {
     grid-template-columns: 1fr 1fr 1fr 40px;
-}
-
-#ofertas>.lista>p.nome {
-    justify-self: left;
-}
-
-#ofertas>.lista>img {
-    width: 25px;
 }
