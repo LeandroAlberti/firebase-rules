@@ -43,14 +43,7 @@ const criarHeader = () => {
 	});
 }
 
-const criarOutput = () => {
-	const pre = document.createElement('pre');
-	pre.id = 'output';
-	pre.className = 'secao';
-	root.appendChild(pre);
-}
-
-const abrirPagina = async (path, comHeader = true, comOutput = false) => {
+const abrirPagina = async (path, comHeader = true) => {
 	root.innerHTML = '';
 	if (comHeader) {
 		await criarHeader();
@@ -59,10 +52,6 @@ const abrirPagina = async (path, comHeader = true, comOutput = false) => {
 	const div = document.createElement('div');
 	div.innerHTML = await dados.text();
 	root.appendChild(div.firstElementChild);
-
-	if (comOutput) {
-		criarOutput();
-	}
 
 	await atribuicoes(path);
 }
@@ -148,79 +137,23 @@ const atribuicoes = async (path) => {
 				});
 			}
 
-			return produtos.listarProdutos(listaProdutos, 'tabela');
-
-			const objProdutos = {
-				idProd1: {
-					nome: 'Nome Prod 1',
-					marca: 'Marca 1',
-					setor: 'Setor 1',
-					qtde: '90',
-					unidade: 'g',
-					timeStamp: 19874937854893
-				},
-				idProd2: {
-					nome: 'Nome Prod 2',
-					marca: 'Marca 2',
-					setor: 'Setor 2',
-					qtde: '1',
-					unidade: 'kg',
-					timeStamp: 19874937854893
-				}
-			}
-
-			for (const idProd in objProdutos) {
-				const nomeProduto = objProdutos[idProd].nome;
-				const marcaProduto = objProdutos[idProd].marca;
-				const setorProduto = objProdutos[idProd].setor;
-				const qtdeProduto = objProdutos[idProd].qtde;
-				const unidadeProduto = objProdutos[idProd].unidade;
-				const tsSetor = objProdutos[idProd].timeStamp;
-				const pNome = document.createElement('p');
-				const pMarca = document.createElement('p');
-				const pSetor = document.createElement('p');
-				const pQtde = document.createElement('p');
-				const pUni = document.createElement('p');
-				const img = document.createElement('img');
-
-				pNome.className = 'nome';
-				pNome.innerHTML = nomeProduto;
-				pMarca.innerHTML = marcaProduto;
-				pSetor.innerHTML = setorProduto;
-				pQtde.innerHTML = qtdeProduto;
-				pUni.innerHTML = unidadeProduto;
-				
-				img.src = 'images/icons/delete.svg';
-				img.style.cursor = 'pointer';
-				// img.onclick = () => removerSetor(nomeSetor, idProd, tsSetor);
-
-				listaProdutos.appendChild(pNome);
-				listaProdutos.appendChild(pMarca);
-				listaProdutos.appendChild(pSetor);
-				listaProdutos.appendChild(pQtde);
-				listaProdutos.appendChild(pUni);
-				listaProdutos.appendChild(img);
-			}
+			produtos.listarProdutos(listaProdutos, 'tabela');
 			break;
 		case 'ofertas':
-			limparBtn.onclick = () => ofertas.limparDados();
-
-			input.onkeypress = (event) => {
-				if (event.key == 'Enter') {
-					if (!authMod.auth.currentUser) {
-						alert('Nenhum usuário logado');
-					} else {
-						const novoDado = {};
-						novoDado.dado = input.value;
-						novoDado.addPor = authMod.auth.currentUser.uid;
-						dados.adicionarDados(novoDado);
-						input.value = '';
-						input.focus();
-					}
+			btnCadastrar.onclick = () => ofertas.adicionarOferta({
+				mercado: mercado.value,
+				dataDe: dataDe.valueAsNumber + (new Date().getTimezoneOffset()/60)*60*60*1000,
+				dataAte: dataAte.valueAsNumber + (new Date().getTimezoneOffset()/60)*60*60*1000 + 23*60*60*1000 + 59*60*1000 + 59*1000,
+				timeStamp: Date.now()
+			}).catch((err) => {
+				if (err == 'PERMISSION_DENIED') {
+					alert('Permissão negada');
+				} else {
+					alert(err);
 				}
-			}
+			});
 
-			await ofertas.carregarDados();
+			ofertas.listarOfertas(listaOfertas);
 			break;
 		case 'auth':
 			emailInp.focus();
@@ -235,5 +168,4 @@ const atribuicoes = async (path) => {
 	}
 }
 
-// abrirPagina('ofertas', true,  true);
-abrirPagina('produtos');
+abrirPagina('ofertas');
