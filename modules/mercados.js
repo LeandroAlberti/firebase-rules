@@ -39,7 +39,6 @@ export const listarMercados = (elementoLista) => {
                 p.innerHTML = nomeMercado;
 
                 img.src = 'images/icons/delete.svg';
-                img.style.cursor = 'pointer';
                 img.onclick = () => removerMercado(nomeMercado, idMercado, tsMercado);
             	elementoLista.appendChild(p);
             	elementoLista.appendChild(img);

@@ -1,6 +1,64 @@
 import { bd, ref, onValue, push, remove } from "./config.js";
+import { dataProdutos } from "./produtos.js";
 
 const refOfertas = ref(bd, '/ofertas');
+
+const abrirProdutos = async (idOferta, mercadoOferta, dataDe, dataAte) => {
+	listaProdutos.style.display = 'flex';
+
+	fecharListaProdutos.onclick = () => {
+		listaProdutos.style.display = 'none';
+	}
+	
+	titulo.innerHTML = `${mercadoOferta} ${dataDe} - ${dataAte}`;
+
+	buscaProduto.value = '';
+	resultadoBusca.innerHTML = '';
+	
+	buscaProduto.oninput = () => {
+		resultadoBusca.innerHTML =
+			`
+			<p>Nome</p>
+			<p>Marca</p>
+			<p>Valor</p>
+			<p></p>
+			`;
+		for (const idProduto in dataProdutos) {
+			const nomeProduto = dataProdutos[idProduto].nome;
+			const marcaProduto = dataProdutos[idProduto].marca;
+			const produto = `${nomeProduto.toLowerCase()} ${marcaProduto.toLowerCase()}`;
+
+			if (buscaProduto.value && produto.includes(buscaProduto.value.toLowerCase())) {
+				const pNome = document.createElement('p');
+				const pMarca = document.createElement('p');
+				const inputValorProduto = document.createElement('input');
+				const imgAdd = document.createElement('img');
+
+				pNome.className = 'nome';
+				pNome.innerHTML = nomeProduto;
+				pMarca.innerHTML = marcaProduto;
+				inputValorProduto.type = 'tel';
+				imgAdd.src = 'images/icons/add.svg';
+
+				const nodes = [pNome, pMarca, inputValorProduto, imgAdd];
+
+				imgAdd.onclick = () => {
+					if (inputValorProduto.value) {
+						alert(`Incluir produto ${idProduto} na oferta ${idOferta} no valor de ${inputValorProduto.value}`)
+						for (const node of nodes) {
+							node.remove();
+						}
+					}
+				}
+
+				resultadoBusca.appendChild(pNome);
+				resultadoBusca.appendChild(pMarca);
+				resultadoBusca.appendChild(inputValorProduto);
+				resultadoBusca.appendChild(imgAdd);
+			}
+		}
+	}
+}
 
 const removerOferta = (mercadoOferta, idOferta, tsOferta) => {
 	if (!confirm(`Deseja remover a oferta ${mercadoOferta} criada em ${new Date(tsOferta).toLocaleString('pt-BR')}?`)) {
@@ -25,6 +83,7 @@ export const listarOfertas = (elementoLista) => {
 				`<p>Mercado</p>
                 <p>De</p>
                 <p>Até</p>
+                <p></p>
                 <p></p>`;
 
 			for (const idOferta in objOfertas) {
@@ -36,21 +95,24 @@ export const listarOfertas = (elementoLista) => {
 				const pMercado = document.createElement('p');
 				const pDataDe = document.createElement('p');
 				const pDataAte = document.createElement('p');
-				const img = document.createElement('img');
+				const imgProdutos = document.createElement('img');
+				const imgRemove = document.createElement('img');
 
 				pMercado.className = 'nome';
 				pMercado.innerHTML = mercadoOferta;
 				pDataDe.innerHTML = `${(new Date(dataDeOferta).getDate()).toString().padStart(2, 0)}/${(new Date(dataDeOferta).getMonth() + 1).toString().padStart(2, 0)}/${new Date(dataDeOferta).getFullYear()}`;
 				pDataAte.innerHTML = `${(new Date(dataAteOferta).getDate()).toString().padStart(2, 0)}/${(new Date(dataAteOferta).getMonth() + 1).toString().padStart(2, 0)}/${new Date(dataAteOferta).getFullYear()}`;
 
-				img.src = 'images/icons/delete.svg';
-				img.style.cursor = 'pointer';
-				img.onclick = () => removerOferta(mercadoOferta, idOferta, tsOferta);
+				imgProdutos.src = 'images/icons/produtos.png';
+				imgProdutos.onclick = () => abrirProdutos(idOferta, mercadoOferta, pDataDe.innerHTML, pDataAte.innerHTML);
+				imgRemove.src = 'images/icons/delete.svg';
+				imgRemove.onclick = () => removerOferta(mercadoOferta, idOferta, tsOferta);
 
 				elementoLista.appendChild(pMercado);
 				elementoLista.appendChild(pDataDe);
 				elementoLista.appendChild(pDataAte);
-				elementoLista.appendChild(img);
+				elementoLista.appendChild(imgProdutos);
+				elementoLista.appendChild(imgRemove);
 			}
 		} else {
 			alert('Nenhuma oferta cadastrada');

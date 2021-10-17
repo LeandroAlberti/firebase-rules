@@ -40,7 +40,6 @@ export const listarSetores = (elementoLista, tipoLista) => {
                     p.innerHTML = nomeSetor;
     
                     img.src = 'images/icons/delete.svg';
-                    img.style.cursor = 'pointer';
                     img.onclick = () => removerSetor(nomeSetor, idSetor, tsSetor);
     
                     elementoLista.appendChild(p);

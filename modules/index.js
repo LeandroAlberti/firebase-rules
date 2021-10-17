@@ -24,11 +24,11 @@ const criarHeader = () => {
 			btnMercados.onclick = () => abrirPagina('mercados');
 			btnSetores.onclick = () => abrirPagina('setores');
 			btnProdutos.onclick = () => abrirPagina('produtos');
-			btnOfertas.onclick = () => abrirPagina('ofertas', true, true);
+			btnOfertas.onclick = () => abrirPagina('ofertas');
 			btnAuth.onclick = () => {
 				if (confirm('Deseja sair do aplicativo?')) {
 					signOut(auth);
-					abrirPagina('ofertas', true, true);
+					abrirPagina('ofertas');
 				}
 			};
 		} else {
@@ -37,7 +37,7 @@ const criarHeader = () => {
 					<button id="btnAuth">Entrar</button>
 				`;
 
-			btnOfertas.onclick = () => abrirPagina('ofertas', true, true);
+			btnOfertas.onclick = () => abrirPagina('ofertas');
 			btnAuth.onclick = () => abrirPagina('auth');
 		}
 	});
@@ -137,7 +137,7 @@ const atribuicoes = async (path) => {
 				});
 			}
 
-			produtos.listarProdutos(listaProdutos, 'tabela');
+			produtos.listarProdutos(listaProdutos);
 			break;
 		case 'ofertas':
 			btnCadastrar.onclick = () => ofertas.adicionarOferta({
@@ -159,7 +159,7 @@ const atribuicoes = async (path) => {
 			emailInp.focus();
 			loginBtn.onclick = () => {
 				authMod.login(emailInp.value, passwordInp.value || '0')
-					.then(() => abrirPagina('ofertas', true,  true))
+					.then(() => abrirPagina('ofertas'))
 					.catch((erro) => {
 						alert(erro);
 					});

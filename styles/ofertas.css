@@ -7,5 +7,36 @@
 }
 
 #ofertas>.lista {
-    grid-template-columns: 1fr 1fr 1fr 40px;
+    grid-template-columns: 1fr 1fr 1fr 40px 40px;
+}
+
+#ofertas>#listaProdutos {
+    display: none;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    flex-direction: column;
+    background-color: var(--preto1);
+    align-items: stretch;
+}
+
+#ofertas>#listaProdutos>#fecharListaProdutos {
+    align-self: end;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+#ofertas>#listaProdutos>#titulo {
+    text-align: center;
+}
+
+#ofertas>#listaProdutos>#resultadoBusca {
+    grid-template-columns: 1fr 1fr 80px 40px;
+}
+
+#ofertas>#listaProdutos>#resultadoBusca>input {
+    text-align: center;
+    width: 50px;
 }

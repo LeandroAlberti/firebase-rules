@@ -1,6 +1,14 @@
 import { bd, ref, push, onValue, remove } from "./config.js";
 
 const refProdutos = ref(bd, '/produtos');
+let dataProdutos;
+
+onValue(refProdutos, (snapshot) => {
+    if (snapshot.exists()) {
+        dataProdutos = snapshot.val();
+    }
+});
+export { dataProdutos }
 
 const removerProduto = (nomeMercado, idMercado, tsMercado) => {
     if (!confirm(`Deseja remover o produto ${nomeMercado} criado em ${new Date(tsMercado).toLocaleString('pt-BR')}?`)) {
@@ -43,6 +51,7 @@ export const listarProdutos = (elementoLista) => {
     onValue(refProdutos, (snapshot) => {
         if (snapshot.exists()) {
             const objProdutos = snapshot.val();
+
             elementoLista.innerHTML =
                 `<p>Produto</p>
                 <p>Marca</p>
@@ -74,7 +83,6 @@ export const listarProdutos = (elementoLista) => {
                 pUnidade.innerHTML = unidadeProduto;
 
                 img.src = 'images/icons/delete.svg';
-                img.style.cursor = 'pointer';
                 img.onclick = () => removerProduto(nomeProduto, idProduto, tsProduto);
 
             	elementoLista.appendChild(pNome);
