@@ -1,13 +1,3 @@
-#setores {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-#setores>#camposNovo {
-    margin-bottom: 10px;
-}
-
 #setores>.lista {
     grid-template-columns: 1fr 40px;
 }

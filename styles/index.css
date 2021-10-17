@@ -78,6 +78,9 @@ input, select {
 
 .secao {
     padding: 20px 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .secao:nth-child(even) {
@@ -90,6 +93,10 @@ input, select {
 
 .secao>h2 {
     text-align: center;
+    margin-bottom: 10px;
+}
+
+.secao>#camposNovo {
     margin-bottom: 10px;
 }
 
@@ -113,6 +120,7 @@ input, select {
 }
 
 #header {
+    flex: 0;
     display: flex;
     flex-direction: row;
     justify-content: center;

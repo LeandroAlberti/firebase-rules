@@ -1,13 +1,3 @@
-#produtos {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-#produtos>#camposNovo {
-    margin-bottom: 10px;
-}
-
 #produtos>.lista {
     grid-template-columns: 1fr 1fr 1fr 50px 30px 40px;
 }
