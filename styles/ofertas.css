@@ -20,6 +20,7 @@
     flex-direction: column;
     background-color: var(--preto1);
     align-items: stretch;
+    padding: 10px;
 }
 
 #ofertas>#listaProdutos>#fecharListaProdutos {
@@ -30,13 +31,19 @@
 
 #ofertas>#listaProdutos>#titulo {
     text-align: center;
+    margin-bottom: 10px;
 }
 
 #ofertas>#listaProdutos>#resultadoBusca {
     grid-template-columns: 1fr 1fr 80px 40px;
+    margin: 10px 0px;
+}
+#ofertas>#listaProdutos>#listaProdutosOfertas {
+    grid-template-columns: 1fr 1fr 1fr 40px;
 }
 
 #ofertas>#listaProdutos>#resultadoBusca>input {
     text-align: center;
-    width: 50px;
+    width: 60px;
+    padding: 5px 10px;
 }

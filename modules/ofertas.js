@@ -1,7 +1,52 @@
-import { bd, ref, onValue, push, remove } from "./config.js";
+import { bd, ref, onValue, push, remove, update } from "./config.js";
 import { dataProdutos } from "./produtos.js";
 
 const refOfertas = ref(bd, '/ofertas');
+
+const adicionarProdutoNaOferta = (strBusca, nodes, idOferta, idProduto) => {
+	if (!strBusca) {
+		return alert('Digite um produto para buscar');
+	}
+
+	if (!nodes[2].value) {
+		return alert('Digite o valor do produto');
+	}
+
+	const refProdutosOferta = ref(bd, `/ofertas/${idOferta}/produtos/`);
+
+	const novoProdutoOferta = {};
+	novoProdutoOferta[idProduto] = nodes[2].value;
+
+	update(refProdutosOferta, novoProdutoOferta);
+
+	for (const node of nodes) {
+		node.remove();
+	}
+
+	buscaProduto.value = '';
+	buscaProduto.focus();
+	resultadoBusca.innerHTML = '';
+}
+
+const removerProdutoOferta = (produto, idOferta) => {
+	const nomeProduto = dataProdutos[produto].nome;
+	
+	if (!confirm(`Remover produto ${nomeProduto}?`)) {
+		return;
+	}
+
+	const refProdutosOferta = ref(bd, `/ofertas/${idOferta}/produtos/${produto}`);
+
+	remove(refProdutosOferta)
+		.catch((err) => {
+			if (err.code == 'PERMISSION_DENIED') {
+				alert('Permissão negada');
+			} else {
+				alert('Erro desconhecido');
+				console.log(err.code);
+			}
+		});
+}
 
 const abrirProdutos = async (idOferta, mercadoOferta, dataDe, dataAte) => {
 	listaProdutos.style.display = 'flex';
@@ -9,20 +54,20 @@ const abrirProdutos = async (idOferta, mercadoOferta, dataDe, dataAte) => {
 	fecharListaProdutos.onclick = () => {
 		listaProdutos.style.display = 'none';
 	}
-	
-	titulo.innerHTML = `${mercadoOferta} ${dataDe} - ${dataAte}`;
 
+	titulo.innerHTML = `${mercadoOferta} ${dataDe} - ${dataAte}`;
 	buscaProduto.value = '';
-	resultadoBusca.innerHTML = '';
-	
+
 	buscaProduto.oninput = () => {
+		if (!buscaProduto.value) {
+			return resultadoBusca.innerHTML = '';
+		}
 		resultadoBusca.innerHTML =
-			`
-			<p>Nome</p>
-			<p>Marca</p>
-			<p>Valor</p>
-			<p></p>
-			`;
+			`<b>Nome</b>
+			<b>Marca</b>
+			<b>Valor</b>
+			<b></b>`;
+
 		for (const idProduto in dataProdutos) {
 			const nomeProduto = dataProdutos[idProduto].nome;
 			const marcaProduto = dataProdutos[idProduto].marca;
@@ -38,18 +83,16 @@ const abrirProdutos = async (idOferta, mercadoOferta, dataDe, dataAte) => {
 				pNome.innerHTML = nomeProduto;
 				pMarca.innerHTML = marcaProduto;
 				inputValorProduto.type = 'tel';
+				inputValorProduto.onkeydown = (evento) => {
+					if (evento.key == 'Enter') {
+						imgAdd.click();
+					}
+				}
 				imgAdd.src = 'images/icons/add.svg';
 
 				const nodes = [pNome, pMarca, inputValorProduto, imgAdd];
 
-				imgAdd.onclick = () => {
-					if (inputValorProduto.value) {
-						alert(`Incluir produto ${idProduto} na oferta ${idOferta} no valor de ${inputValorProduto.value}`)
-						for (const node of nodes) {
-							node.remove();
-						}
-					}
-				}
+				imgAdd.onclick = () => adicionarProdutoNaOferta(buscaProduto.value, nodes, idOferta, idProduto);
 
 				resultadoBusca.appendChild(pNome);
 				resultadoBusca.appendChild(pMarca);
@@ -58,6 +101,42 @@ const abrirProdutos = async (idOferta, mercadoOferta, dataDe, dataAte) => {
 			}
 		}
 	}
+
+	const refProdutosOferta = ref(bd, `/ofertas/${idOferta}/produtos/`);
+
+	onValue(refProdutosOferta, (snap) => {
+		listaProdutosOfertas.innerHTML = '';
+		if (snap.exists()) {
+			listaProdutosOfertas.innerHTML =
+				`<b>Produto</b>
+				<b>Marca</b>
+				<b>Valor</b>
+				<p></p>`;
+
+			for (const produto in snap.val()) {
+				const nomeProduto = dataProdutos[produto].nome;
+				const marcaProduto = dataProdutos[produto].marca;
+				const valorDoProduto = snap.val()[produto];
+
+				const pProduto = document.createElement('p');
+				const pMarca = document.createElement('p');
+				const pValor = document.createElement('p');
+				const imgRemove = document.createElement('img');
+
+				pProduto.className = 'nome';
+				pProduto.innerHTML = nomeProduto;
+				pMarca.innerHTML = marcaProduto;
+				pValor.innerHTML = valorDoProduto;
+				imgRemove.src = 'images/icons/delete.svg';
+				imgRemove.onclick = () => removerProdutoOferta(produto, idOferta);
+
+				listaProdutosOfertas.appendChild(pProduto);
+				listaProdutosOfertas.appendChild(pMarca);
+				listaProdutosOfertas.appendChild(pValor);
+				listaProdutosOfertas.appendChild(imgRemove);
+			}
+		}
+	});
 }
 
 const removerOferta = (mercadoOferta, idOferta, tsOferta) => {
@@ -80,9 +159,9 @@ export const listarOfertas = (elementoLista) => {
 		if (snapshot.exists()) {
 			const objOfertas = snapshot.val();
 			elementoLista.innerHTML =
-				`<p>Mercado</p>
-                <p>De</p>
-                <p>Até</p>
+				`<b>Mercado</b>
+                <b>De</b>
+                <b>Até</b>
                 <p></p>
                 <p></p>`;
 
