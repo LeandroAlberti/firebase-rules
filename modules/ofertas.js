@@ -1,5 +1,6 @@
 import { bd, ref, onValue, push, remove, update } from "./config.js";
 import { dataProdutos } from "./produtos.js";
+import { mascaraPreco } from "./utils.js";
 
 const refOfertas = ref(bd, '/ofertas');
 
@@ -73,7 +74,7 @@ const abrirProdutos = async (idOferta, mercadoOferta, dataDe, dataAte) => {
 			const marcaProduto = dataProdutos[idProduto].marca;
 			const produto = `${nomeProduto.toLowerCase()} ${marcaProduto.toLowerCase()}`;
 
-			if (buscaProduto.value && produto.includes(buscaProduto.value.toLowerCase())) {
+			if (produto.includes(buscaProduto.value.toLowerCase())) {
 				const pNome = document.createElement('p');
 				const pMarca = document.createElement('p');
 				const inputValorProduto = document.createElement('input');
@@ -83,6 +84,8 @@ const abrirProdutos = async (idOferta, mercadoOferta, dataDe, dataAte) => {
 				pNome.innerHTML = nomeProduto;
 				pMarca.innerHTML = marcaProduto;
 				inputValorProduto.type = 'tel';
+
+				inputValorProduto.oninput = () => inputValorProduto.value = mascaraPreco(inputValorProduto.value, 6);
 				inputValorProduto.onkeydown = (evento) => {
 					if (evento.key == 'Enter') {
 						imgAdd.click();
