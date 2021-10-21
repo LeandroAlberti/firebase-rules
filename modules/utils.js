@@ -1,7 +1,5 @@
 export const mascaraPreco = (preco, max) => {
-    if (max < 3) {
-        throw 'Parâmetro max de mascaraPreco() precisa ser maior que 2.';
-    }
+    if (max < 3) throw 'Parâmetro max de mascaraPreco() precisa ser maior que 2.';
     preco = preco.replace(/\D/g, '');
     if (!preco) return '';
     preco = parseInt(preco).toString();
@@ -9,4 +7,11 @@ export const mascaraPreco = (preco, max) => {
     if (preco.length == 2) return preco.replace(/(\d{2})/, '0,$1');
     if (preco.length > max) preco = preco.substr(0, max);
     return preco.replace(/(\d+)(\d{2})/, '$1,$2');
+}
+
+export const timestampParaDataBR = (timestamp) => {
+    if (!timestamp) {
+        return '';
+    }
+    return `${(new Date(timestamp).getDate()).toString().padStart(2, 0)}/${(new Date(timestamp).getMonth() + 1).toString().padStart(2, 0)}/${new Date(timestamp).getFullYear()}`
 }

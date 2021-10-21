@@ -12,7 +12,8 @@ const criarHeader = () => {
 		loader.style.display = 'none';
 		if (user) {
 			header.innerHTML =
-				` <button id="btnUsuarios">Usuários</button>
+				` <button id="btnInicio">Início</button>
+				  <button id="btnUsuarios">Usuários</button>
 				  <button id="btnMercados">Mercados</button>
 				  <button id="btnSetores">Setores</button>
 				  <button id="btnProdutos">Produtos</button>
@@ -28,18 +29,18 @@ const criarHeader = () => {
 			btnAuth.onclick = () => {
 				if (confirm('Deseja sair do aplicativo?')) {
 					signOut(auth);
-					abrirPagina('ofertas');
+					abrirPagina('inicio');
 				}
 			};
 		} else {
 			header.innerHTML =
-				`	<button id="btnOfertas">Ofertas</button>
-					<button id="btnAuth">Entrar</button>
+				`<button id="btnInicio">Início</button>
+				 <button id="btnAuth">Entrar</button>
 				`;
 
-			btnOfertas.onclick = () => abrirPagina('ofertas');
 			btnAuth.onclick = () => abrirPagina('auth');
 		}
+		btnInicio.onclick = () => abrirPagina('inicio');
 	});
 }
 
@@ -153,7 +154,7 @@ const atribuicoes = async (path) => {
 				}
 			});
 
-			ofertas.listarOfertas(listaOfertas);
+			ofertas.listarOfertas({elementoLista: listaOfertas});
 			break;
 		case 'auth':
 			emailInp.focus();
@@ -165,7 +166,10 @@ const atribuicoes = async (path) => {
 					});
 			}
 			break;
+		case 'inicio':
+			ofertas.listarOfertas({listarInicio: true});
+			break;
 	}
 }
 
-abrirPagina('ofertas');
+abrirPagina('inicio');

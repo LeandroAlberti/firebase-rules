@@ -1,6 +1,6 @@
 import { bd, ref, onValue, push, remove, update } from "./config.js";
 import { dataProdutos } from "./produtos.js";
-import { mascaraPreco } from "./utils.js";
+import { mascaraPreco, timestampParaDataBR } from "./utils.js";
 
 const refOfertas = ref(bd, '/ofertas');
 
@@ -157,11 +157,27 @@ const removerOferta = (mercadoOferta, idOferta, tsOferta) => {
 		});
 }
 
-export const listarOfertas = (elementoLista) => {
+export const listarOfertas = (opcoes = {}) => {
 	onValue(refOfertas, (snapshot) => {
 		if (snapshot.exists()) {
 			const objOfertas = snapshot.val();
-			elementoLista.innerHTML =
+
+			// Listar ofertas no início
+			if (opcoes.listarInicio) {
+				for (const oferta in objOfertas) {
+
+					if (objOfertas[oferta].dataDe <= Date.now() && objOfertas[oferta].dataAte >= Date.now()) {
+						console.log(`Mercado: ${objOfertas[oferta].mercado.padEnd(14, '.')}, De: ${timestampParaDataBR(objOfertas[oferta].dataDe)}, Hoje: ${timestampParaDataBR(Date.now())}, Até: ${timestampParaDataBR(objOfertas[oferta].dataAte)}`);
+					} else {
+						// Não Mostrar
+						// console.log(`Mercado: ${objOfertas[oferta].mercado.padEnd(14, '.')}, De: ${timestampParaDataBR(objOfertas[oferta].dataDe)}, Hoje: ${timestampParaDataBR(Date.now())}, Até: ${timestampParaDataBR(objOfertas[oferta].dataAte)}`);
+					}
+
+				}
+				return;
+			}
+
+			opcoes.elementoLista.innerHTML =
 				`<b>Mercado</b>
                 <b>De</b>
                 <b>Até</b>
@@ -182,19 +198,18 @@ export const listarOfertas = (elementoLista) => {
 
 				pMercado.className = 'nome';
 				pMercado.innerHTML = mercadoOferta;
-				pDataDe.innerHTML = `${(new Date(dataDeOferta).getDate()).toString().padStart(2, 0)}/${(new Date(dataDeOferta).getMonth() + 1).toString().padStart(2, 0)}/${new Date(dataDeOferta).getFullYear()}`;
-				pDataAte.innerHTML = `${(new Date(dataAteOferta).getDate()).toString().padStart(2, 0)}/${(new Date(dataAteOferta).getMonth() + 1).toString().padStart(2, 0)}/${new Date(dataAteOferta).getFullYear()}`;
-
+				pDataDe.innerHTML = timestampParaDataBR(dataDeOferta);				
+				pDataAte.innerHTML = timestampParaDataBR(dataAteOferta);
 				imgProdutos.src = 'images/icons/produtos.png';
 				imgProdutos.onclick = () => abrirProdutos(idOferta, mercadoOferta, pDataDe.innerHTML, pDataAte.innerHTML);
 				imgRemove.src = 'images/icons/delete.svg';
 				imgRemove.onclick = () => removerOferta(mercadoOferta, idOferta, tsOferta);
 
-				elementoLista.appendChild(pMercado);
-				elementoLista.appendChild(pDataDe);
-				elementoLista.appendChild(pDataAte);
-				elementoLista.appendChild(imgProdutos);
-				elementoLista.appendChild(imgRemove);
+				opcoes.elementoLista.appendChild(pMercado);
+				opcoes.elementoLista.appendChild(pDataDe);
+				opcoes.elementoLista.appendChild(pDataAte);
+				opcoes.elementoLista.appendChild(imgProdutos);
+				opcoes.elementoLista.appendChild(imgRemove);
 			}
 		} else {
 			alert('Nenhuma oferta cadastrada');
