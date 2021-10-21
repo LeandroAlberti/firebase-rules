@@ -75,7 +75,7 @@ const atribuicoes = async (path) => {
 			usuarios.carregarUsuarios();
 			break;
 		case 'mercados':
-			mercados.listarMercados(listaMercados);
+			mercados.listarMercados({elementoLista: listaMercados});
 
 			nome.onkeypress = (event) => {
 				if (event.key == 'Enter') {
@@ -153,6 +153,8 @@ const atribuicoes = async (path) => {
 					alert(err);
 				}
 			});
+
+			mercados.listarMercados({selectOfertas: true});
 
 			ofertas.listarOfertas({elementoLista: listaOfertas});
 			break;

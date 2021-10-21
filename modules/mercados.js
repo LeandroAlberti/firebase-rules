@@ -24,25 +24,39 @@ export const incluirMercado = async (mercado) => {
         });
 }
 
-export const listarMercados = (elementoLista) => {
+export const listarMercados = (opcoes = {}) => {
     onValue(refMercados, (snapshot) => {
         if (snapshot.exists()) {
             const objMercados = snapshot.val();
-            elementoLista.innerHTML = '';
-            for (const idMercado in objMercados) {
-                const nomeMercado = objMercados[idMercado].nome;
-                const tsMercado = objMercados[idMercado].timeStamp;
-                const p = document.createElement('p');
-                const img = document.createElement('img');
 
-                p.className = 'nome';
-                p.innerHTML = nomeMercado;
-
-                img.src = 'images/icons/delete.svg';
-                img.onclick = () => removerMercado(nomeMercado, idMercado, tsMercado);
-            	elementoLista.appendChild(p);
-            	elementoLista.appendChild(img);
+            // lista do cadastro de mercados
+            if (opcoes.elementoLista) {                
+                opcoes.elementoLista.innerHTML = '';
+                for (const idMercado in objMercados) {
+                    const nomeMercado = objMercados[idMercado].nome;
+                    const tsMercado = objMercados[idMercado].timeStamp;
+                    const p = document.createElement('p');
+                    const img = document.createElement('img');
+    
+                    p.className = 'nome';
+                    p.innerHTML = nomeMercado;
+    
+                    img.src = 'images/icons/delete.svg';
+                    img.onclick = () => removerMercado(nomeMercado, idMercado, tsMercado);
+                    opcoes.elementoLista.appendChild(p);
+                    opcoes.elementoLista.appendChild(img);
+                }
             }
+
+            // select do cadastro de ofertas
+            if (opcoes.selectOfertas) {
+                mercado.innerHTML = '<option></option>';
+
+                for (const idMercado in objMercados) {
+                    mercado.innerHTML += `<option>${objMercados[idMercado].nome}</option>`;
+                }
+            }
+
         } else {
             alert('Nenhum mercado cadastrado');
         }
